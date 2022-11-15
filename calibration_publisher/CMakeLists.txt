@@ -13,15 +13,21 @@ find_package(catkin REQUIRED COMPONENTS
         tf
         image_transport
         autoware_msgs
+        # cfg depends
+        message_generation 
+        dynamic_reconfigure
         )
 
 find_package(OpenCV REQUIRED)
+find_package(PCL REQUIRED)
+find_package(Eigen3 REQUIRED)
 
-set(CMAKE_AUTOMOC ON)
-#set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+#add dynamic reconfigure api
+generate_dynamic_reconfigure_options(
+ cfg/Calib.cfg
+)
 
 catkin_package(
         CATKIN_DEPENDS
@@ -33,18 +39,18 @@ catkin_package(
         tf
         image_transport
         autoware_msgs
+        message_runtime
 )
 
 set(CMAKE_CXX_FLAGS "-O2 -Wall -g ${CMAKE_CXX_FLAGS}")
 
-
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
 include_directories(
         ${catkin_INCLUDE_DIRS}
         ${autoware_msgs_INCLUDE_DIRS}
         ${OpenCV_INCLUDE_DIRS}
+        ${EIGEN3_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -57,10 +63,15 @@ add_executable(calibration_publisher
 
 add_dependencies(calibration_publisher
         ${catkin_EXPORTED_TARGETS}
+        ${PROJECT_NAME}_gencfg
         )
-
+link_directories(
+        ${PCL_LIBRARY_DIRS}
+        )
 target_link_libraries(calibration_publisher
         ${catkin_LIBRARIES}
+        ${OpenCV_LIBRARIES}
+        ${PCL_LIBRARIES}
         )
 
 install(TARGETS calibration_publisher
