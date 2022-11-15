@@ -40,8 +40,8 @@ static autoware_msgs::ProjectionMatrix extrinsic_matrix_msg_;
 
 void SigHandle(int sig)
 {
-    scope_color(ANSI_COLOR_CYAN_BOLD);
-    std::cout<<"Modified extrinsic matrix:"<<std::endl;
+  scope_color(ANSI_COLOR_CYAN_BOLD);
+  std::cout<<"Modified extrinsic matrix:"<<std::endl;
 	std::cout<< M_cam2lidar <<std::endl;
 	std::cout<<"Euler angles(RPY): "<< M_cam2lidar.block<3,3>(0,0).eulerAngles(0,1,2).transpose() <<std::endl;
 	std::cout<<"Translation(XYZ):    "<< M_cam2lidar(0,3)<<"   "<<M_cam2lidar(1,3)<<"   "<<M_cam2lidar(2,3) <<std::endl;

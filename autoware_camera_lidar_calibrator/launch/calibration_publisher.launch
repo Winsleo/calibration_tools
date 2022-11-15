@@ -4,8 +4,8 @@
     <arg name="publish_extrinsic_mat" default="true"/>
     <arg name="publish_camera_info" default="true"/>
     <arg name="camera_id" default="/"/>
-    <arg name="target_frame" default="rslidar"/>
-    <arg name="camera_frame" default="blackfly_camera"/>
+    <arg name="target_frame" default="lidar"/>
+    <arg name="camera_frame" default="camera"/>
     <arg name="image_topic_src" default="/flir_adk/image_raw"/>
     <arg name="camera_info_topic" default="/camera_info"/>
     <arg name="projection_matrix_topic" default="/projection_matrix"/>
