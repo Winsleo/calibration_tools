@@ -1,0 +1,12 @@
+<launch>
+    <arg name="image_src" default="/flir_adk/image_raw"/>
+    <arg name="camera_info_src" default="/flir_adk/camera_info"/>
+    <include file = "$(find autoware_camera_lidar_calibrator)/launch/calibration_publisher.launch"/>
+    <include file = "$(find autoware_camera_lidar_calibrator)/launch/points2image.launch"/>
+    <node pkg="image_processor" type="image_rectifier" name="rectifier" output="screen">
+        <param name="image_src" value="$(arg image_src)" />
+        <param name="camera_info_src" value="$(arg camera_info_src)" />
+    </node>
+    <node pkg="rviz" type="rviz" name="rviz_calibration" args="-d $(find autoware_camera_lidar_calibrator)/launch/calibration_show.rviz"/>
+</launch>
+
