@@ -1,9 +1,9 @@
 #ifndef DRAW_RECTS_H
 #define DRAW_RECTS_H
 
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include <autoware_msgs/DetectedObjectArray.h>
-
+#include <opencv2/imgproc/imgproc_c.h>
 #define XSTR(x) #x
 #define STR(x) XSTR(x)
 

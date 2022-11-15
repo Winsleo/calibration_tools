@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8.7)
 project(integrated_viewer)
 
 
+# find_package(autoware_build_flags REQUIRED)
+
 find_package(autoware_msgs REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
         cv_bridge

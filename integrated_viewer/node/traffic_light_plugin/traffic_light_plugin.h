@@ -3,9 +3,10 @@
 
 #ifndef Q_MOC_RUN
 #include <ros/ros.h>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 #include <rviz/panel.h>
+#include <opencv2/imgproc/imgproc_c.h>
 #include "autoware_msgs/TrafficLight.h"
 
 #include "convert_image.h"
