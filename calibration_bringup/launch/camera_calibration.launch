@@ -1,0 +1,37 @@
+
+<launch>
+    <arg name="playbag" default="false"/>
+    <arg name="bagfile" default="$(find calibration_bringup)/bagfiles/calib.bag" />
+    <arg name="compressed_stream" default="false" />
+    <arg name="image_src" default="/flir_adk/image_raw" />
+    <arg name="camera_info_src" default="/camera_info" />
+    <arg name="size" default="11x8" />
+    <arg name="square" default="0.025" />
+    <arg name="k-coefficients" default="6" />
+
+    <node if="$(arg compressed_stream)" name="decompress" type="republish" pkg="image_transport" output="screen" 
+    args="compressed in:=$(arg image_src) raw out:=$(arg image_src)" />
+    <!-- Play rosbag record -->
+    <node 
+        if="$(arg playbag)"
+        pkg="rosbag"
+        type="play"
+        name="player"
+        output="screen"
+        args="--clock --pause --loop $(arg bagfile)" />
+    <!-- Run camera calibration -->
+    <node   
+        pkg="camera_calibration"
+        type="cameracalibrator.py"
+        name="cameracalibrator"
+        output="screen"
+        args="--size=$(arg size) 
+              --square=$(arg square)
+              --k-coefficients=$(arg k-coefficients) 
+              --no-service-check" >
+        <!-- Remap input topics -->
+        <remap from="image" to="$(arg image_src)" />
+        <remap from="camera" to="$(arg camera_info_src)" />
+    </node>
+
+</launch>

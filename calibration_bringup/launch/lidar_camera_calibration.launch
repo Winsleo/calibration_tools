@@ -1,0 +1,42 @@
+<launch>
+    <arg name="playbag" default="false" />
+    <arg name="bagfile" default="$(find calibration_bringup)/bagfiles/calib.bag" />
+    <arg name="compressed_stream" default="false" />
+    <arg name="intrinsics_file" default="$(find calibration_bringup)/calibration/intrinsic.yaml"/>
+    <arg name="image_src" default="/flir_adk/image_raw" />
+
+    <arg name="camera_info_src" default="/camera_info" />
+    <arg name="target_frame" default="lidar"/>
+    <arg name="camera_frame" default="camera"/>
+
+    <node if="$(arg compressed_stream)" name="decompress" type="republish" pkg="image_transport" output="screen" args="compressed in:=$(arg image_src) raw out:=$(arg image_src)" />
+    <!-- Play rosbag record -->
+    <node if="$(arg playbag)" pkg="rosbag" type="play" name="player" output="screen"
+        args="--clock --pause --loop $(arg bagfile)" />
+
+    <node pkg="calibration_publisher" type="calibration_publisher" name="calibration_publisher">
+        <param name="register_lidar2camera_tf" type="bool" value="false"/>
+        <param name="publish_extrinsic_mat" type="bool" value="false"/>
+        <param name="publish_camera_info" type="bool" value="true"/>
+        <param name="image_topic_src" value="$(arg image_src)"/>
+        <param name="calibration_file" value="$(arg intrinsics_file)"/>
+        <param name="target_frame" type="str" value="$(arg target_frame)"/>
+        <param name="camera_frame" type="str" value="$(arg camera_frame)"/>
+    </node>
+
+    <node pkg="image_processor" type="image_rectifier" name="rectifier" output="screen">
+        <param name="image_src" value="$(arg image_src)" />
+        <param name="camera_info_src" value="$(arg camera_info_src)" />
+    </node>
+
+    <node pkg="image_view2" type="image_view2" name="image_view2" output="screen">
+        <remap from="image" to="image_rectified" />
+    </node>
+    <node pkg="rviz" type="rviz" name="rviz_calibration" output="log" args="-d $(find calibration_bringup)/launch/lidar_camera_calibration.rviz"/>
+
+    <node pkg="autoware_camera_lidar_calibrator" type="autoware_camera_lidar_calibration_node" name="autoware_camera_lidar_calibration_node" output="screen">
+        <param name="image_src" value="/image_rectified" />
+        <param name="camera_info_src" value="$(arg camera_info_src)" />
+    </node>
+
+</launch>
