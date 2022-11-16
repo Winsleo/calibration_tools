@@ -1,18 +1,20 @@
 <launch>
-    <arg name="compressed_stream" default="false" />
+    <arg name="compressed_stream" default="true" />
     <arg name="image_src" default="/flir_adk/image_raw"/>
     <arg name="camera_info_src" default="/camera_info"/>
+    <arg name="calib_file" value="$(find autoware_camera_lidar_calibrator)/calibration/lidar_camera_calibration.yaml"/>
+    
     <node if="$(arg compressed_stream)" name="decompress" type="republish" pkg="image_transport" output="screen" args="compressed in:=$(arg image_src) raw out:=$(arg image_src)" />
-    <include file = "$(find autoware_camera_lidar_calibrator)/launch/calibration_publisher.launch">
-        <arg name="file" value="$(find autoware_camera_lidar_calibrator)/calibration/lidar_camera_calibration.yaml"/>
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" output="log" name="calibration_reconfigure"/>
+    <include file = "$(find calibration_publisher)/launch/calibration_publisher.launch">
+        <arg name="file" value="$(arg calib_file)"/>
         <arg name="image_topic_src" default="$(arg image_src)"/>
     </include>
-    <include file = "$(find autoware_camera_lidar_calibrator)/launch/points2image.launch"/>
+    <include file = "$(find points2image)/launch/points2image.launch"/>
     <node pkg="image_processor" type="image_rectifier" name="rectifier" output="log">
         <param name="image_src" value="$(arg image_src)" />
         <param name="camera_info_src" value="$(arg camera_info_src)" />
     </node>
     <node pkg="rviz" type="rviz" name="rviz_calibration" output="log" args="-d $(find autoware_camera_lidar_calibrator)/launch/calibration_show.rviz"/>
-    <node pkg="rqt_reconfigure" type="rqt_reconfigure" output="log" name="calibration_reconfigure"/>
 </launch>
 

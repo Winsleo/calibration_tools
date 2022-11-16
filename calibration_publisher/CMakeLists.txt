@@ -74,6 +74,22 @@ target_link_libraries(calibration_publisher
         ${PCL_LIBRARIES}
         )
 
+# set_default_param
+add_executable(set_default_param
+        set_default_param.cpp
+        )
+
+add_dependencies(set_default_param
+        ${catkin_EXPORTED_TARGETS}
+        ${PROJECT_NAME}_gencfg
+        )
+        
+target_link_libraries(set_default_param
+        ${catkin_LIBRARIES}
+        ${OpenCV_LIBRARIES}
+        ${PCL_LIBRARIES}
+        )
+
 install(TARGETS calibration_publisher
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
