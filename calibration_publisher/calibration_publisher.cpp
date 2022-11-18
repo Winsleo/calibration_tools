@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
 	fs["DistCoeff"] >> DistCoeff;
 	fs["ImageSize"] >> ImageSize;
 	fs["DistModel"] >> DistModel;
-	  
+	fs.release();//释放资源
 	M_cam2lidar<<CameraExtrinsicMat.at<double>(0, 0), CameraExtrinsicMat.at<double>(0, 1), CameraExtrinsicMat.at<double>(0, 2),CameraExtrinsicMat.at<double>(0, 3),
 	CameraExtrinsicMat.at<double>(1, 0), CameraExtrinsicMat.at<double>(1, 1), CameraExtrinsicMat.at<double>(1, 2), CameraExtrinsicMat.at<double>(1, 3),
 	CameraExtrinsicMat.at<double>(2, 0), CameraExtrinsicMat.at<double>(2, 1), CameraExtrinsicMat.at<double>(2, 2), CameraExtrinsicMat.at<double>(2, 3),
