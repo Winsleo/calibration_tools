@@ -1,2 +1,2 @@
 .vscode
-calibration_bringup/bagfiles/*
+calibration_bringup/bagfiles/*.bag
