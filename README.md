@@ -57,7 +57,7 @@ roslaunch calibration_bringup camera_calibration.launch playbag:=true compressed
 ```bash
 roslaunch calibration_bringup display_camera_calibration.launch playbag:=true compressed_stream:=true
 ```
-
+![](pictures/display_camera_calibration.png)
 
 
 ## 相机雷达联合标定
@@ -78,7 +78,7 @@ roslaunch calibration_bringup lidar_camera_calibration.launch playbag:=true comp
 ```bash
 roslaunch calibration_bringup display_lidar_camera_calibration.launch playbag:=true compressed_stream:=true
 ```
-
+![](pictures/display_extrinsic_calibration.png)
 
 
 
